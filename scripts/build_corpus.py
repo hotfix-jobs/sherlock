@@ -29,7 +29,11 @@ import httpx
 import yaml
 
 API_BASE = "https://developer.apple.com/tutorials/data/documentation"
-ROOT_INDEX_URL = "https://developer.apple.com/tutorials/data/documentation.json"
+ROOT_INDEX_URL = "https://developer.apple.com/tutorials/data/documentation/technologies.json"
+NON_FRAMEWORK_SLUGS = {
+    "technologies", "technologyoverviews", "samplecode", "updates",
+    "tutorials",
+}
 USER_AGENT = "Sherlock/0.1 (+https://github.com/hotfix-jobs/sherlock)"
 HTTP_TIMEOUT = httpx.Timeout(30.0, connect=10.0)
 DEFAULT_CONCURRENCY = 16
@@ -120,7 +124,9 @@ async def discover_frameworks(client: httpx.AsyncClient) -> list[str]:
             continue
         rest = url[len("/documentation/"):].strip("/")
         if rest and "/" not in rest:
-            slugs.add(rest.lower())
+            slug = rest.lower()
+            if slug not in NON_FRAMEWORK_SLUGS:
+                slugs.add(slug)
 
     if not slugs:
         return list(FALLBACK_FRAMEWORKS)
