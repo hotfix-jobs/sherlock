@@ -13,14 +13,13 @@ Sherlock pairs naturally with the [Superpowers](https://github.com/obra/superpow
 ## Install
 
 ```
+/plugin marketplace add hotfix-jobs/sherlock
 /plugin install sherlock
 ```
 
-Pre-marketplace: clone this repo and add it as a local plugin in `~/.claude/settings.json`.
-
 ## What you get
 
-Five MCP tools your agent can call directly:
+### Five MCP tools your agent can call directly
 
 | Tool | Use |
 |---|---|
@@ -30,7 +29,13 @@ Five MCP tools your agent can call directly:
 | `install_framework` | Bulk-download a framework for full offline mode |
 | `update_index` | Pull the latest weekly index release |
 
-Plus a [skill](plugin/skills/docs/SKILL.md) that teaches Claude when to reach for these tools.
+### Three skills that teach Claude when to reach for those tools
+
+| Skill | Triggers when |
+|---|---|
+| [`docs`](plugin/skills/docs/SKILL.md) | User asks about an Apple platform API, references developer.apple.com, or works with code that uses an Apple symbol |
+| [`api-availability`](plugin/skills/api-availability/SKILL.md) | User mentions a specific iOS / macOS / visionOS / watchOS / tvOS version, references `@available`, asks about deprecation, or asks about back-deployment |
+| [`signature-verification`](plugin/skills/signature-verification/SKILL.md) | Before Claude writes any Apple framework code calling a symbol it has not just looked up — prevents hallucinated method names, parameter labels, and return types |
 
 ## How it works
 
@@ -59,11 +64,16 @@ Override paths with `SHERLOCK_DATA_DIR` and `SHERLOCK_RELEASE_BASE` env vars.
 
 ```
 sherlock/
+├── .claude-plugin/
+│   └── marketplace.json       # marketplace manifest (lists sherlock as a plugin)
+│
 ├── plugin/                    # what users install
 │   ├── .claude-plugin/
 │   │   └── plugin.json
-│   ├── skills/docs/
-│   │   └── SKILL.md
+│   ├── skills/
+│   │   ├── docs/SKILL.md
+│   │   ├── api-availability/SKILL.md
+│   │   └── signature-verification/SKILL.md
 │   └── mcp/                   # MCP server (Python)
 │       ├── server.py
 │       ├── search.py          # SQLite FTS5
