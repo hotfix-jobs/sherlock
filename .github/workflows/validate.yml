@@ -28,13 +28,6 @@ jobs:
       - name: Validate marketplace + plugin manifest
         run: claude plugin validate .
 
-      - name: Check for em dashes in committed text
-        run: |
-          if grep -rn "—" --include="*.md" --include="*.json" --include="*.py" --include="*.yml" --include="*.yaml" --exclude-dir=.git .; then
-            echo "::error::Found em dashes (—) in committed files. Replace with periods, semicolons, colons, or parens."
-            exit 1
-          fi
-
       - name: Smoke-test build pipeline imports
         run: |
           pip install -r scripts/requirements.txt

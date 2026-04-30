@@ -44,7 +44,7 @@ Before writing any of:
 ## What NOT to do
 
 - Never write Apple framework code from memory for a symbol you have not looked up in this session
-- Don't paraphrase signatures from search snippets — they are summaries, not declarations. Read the full doc page.
+- Don't paraphrase signatures from search snippets. They are summaries, not declarations. Read the full doc page.
 - If you cannot find a symbol, do not invent one to satisfy the user's request. Say so explicitly.
 - Don't trust your memory of Swift evolution. APIs are renamed and deprecated frequently.
 - Don't skip verification because the API "feels" obvious. The obvious-feeling ones are exactly where parameter labels get hallucinated.
@@ -55,7 +55,7 @@ Before writing any of:
 - About to fill in parameter labels from memory because they "feel right"
 - About to use a completion-handler version of an API without checking if there is an async version
 - About to add a SwiftUI modifier you have not verified exists
-- "I'm pretty sure the signature is..." — pretty sure is not verified
+- "I'm pretty sure the signature is..." (pretty sure is not verified)
 
 All of these mean: search, read the declaration, then write the code with the verified signature.
 

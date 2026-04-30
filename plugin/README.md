@@ -30,7 +30,7 @@ Named after Apple's original macOS search app (and the dev folklore around it), 
 |---|---|
 | `docs` | User asks about an Apple platform API, references developer.apple.com, or works with code that uses an Apple symbol |
 | `api-availability` | User mentions a specific iOS / macOS / visionOS / watchOS / tvOS version, references `@available`, asks about deprecation, or asks about back-deployment |
-| `signature-verification` | Before Claude writes any Apple framework code calling a symbol it has not just looked up — prevents hallucinated method names, parameter labels, and return types |
+| `signature-verification` | Before Claude writes any Apple framework code calling a symbol it has not just looked up. Prevents hallucinated method names, parameter labels, and return types |
 
 The `docs` skill defers to `superpowers:brainstorming` and `superpowers:writing-plans` when the [Superpowers](https://github.com/obra/superpowers) plugin is also installed.
 

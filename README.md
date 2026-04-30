@@ -44,7 +44,7 @@ If `python3` is not available, the plugin will fail to start. On macOS, install 
 |---|---|
 | [`docs`](plugin/skills/docs/SKILL.md) | User asks about an Apple platform API, references developer.apple.com, or works with code that uses an Apple symbol |
 | [`api-availability`](plugin/skills/api-availability/SKILL.md) | User mentions a specific iOS / macOS / visionOS / watchOS / tvOS version, references `@available`, asks about deprecation, or asks about back-deployment |
-| [`signature-verification`](plugin/skills/signature-verification/SKILL.md) | Before Claude writes any Apple framework code calling a symbol it has not just looked up — prevents hallucinated method names, parameter labels, and return types |
+| [`signature-verification`](plugin/skills/signature-verification/SKILL.md) | Before Claude writes any Apple framework code calling a symbol it has not just looked up. Prevents hallucinated method names, parameter labels, and return types |
 
 ## How it works
 

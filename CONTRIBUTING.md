@@ -57,10 +57,9 @@ CI runs this on every PR, so manifest errors are caught before merge.
 ## PR expectations
 
 1. One logical change per PR
-2. No em dashes in any committed text (use periods, semicolons, colons, or parens). CI enforces this.
-3. Update the relevant SKILL.md or README if behavior changes
-4. If you're touching the build pipeline, smoke-test against at least one small framework
-5. Squash commits before merging (we keep history linear)
+2. Update the relevant SKILL.md or README if behavior changes
+3. If you're touching the build pipeline, smoke-test against at least one small framework
+4. Squash commits before merging (we keep history linear)
 
 ## License
 
