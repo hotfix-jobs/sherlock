@@ -48,12 +48,29 @@ jobs:
           done
           ls -lh dist/
 
+      - name: Compute release metadata
+        id: meta
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          echo "date=$DATE" >> $GITHUB_OUTPUT
+          PAGES=$(jq -r '.total_pages' dist/manifest.json)
+          FW_COUNT=$(jq -r '.frameworks | length' dist/manifest.json)
+          {
+            echo "Apple Developer documentation snapshot built ${DATE}."
+            echo ""
+            echo "- **${PAGES} pages** indexed across **${FW_COUNT} frameworks**"
+            echo "- Frameworks: $(jq -r '.frameworks | join(", ")' dist/manifest.json)"
+            echo "- Build duration: $(jq -r '.duration_seconds' dist/manifest.json)s"
+            echo ""
+            echo "Install [Sherlock](https://github.com/hotfix-jobs/sherlock) and call \`update_index\` to fetch this release."
+          } > dist/release-notes.md
+
       - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: corpus-${{ github.run_number }}
-          name: Corpus ${{ github.run_number }}
-          body_path: dist/manifest.json
+          tag_name: corpus-${{ steps.meta.outputs.date }}
+          name: Apple Docs Corpus ${{ steps.meta.outputs.date }}
+          body_path: dist/release-notes.md
           files: |
             dist/index.db.zst
             dist/manifest.json
