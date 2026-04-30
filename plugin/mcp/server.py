@@ -21,7 +21,7 @@ from fetch import (
     update_index_db,
 )
 
-mcp = FastMCP("sherlock")
+mcp = FastMCP("apple")
 
 
 @mcp.tool()

@@ -102,8 +102,23 @@ def read_doc(path: str) -> str:
 
 
 def _download_zst(url: str, dest: Path) -> None:
+    """Download a zstd-compressed file and decompress to dest.
+
+    Uses streaming decompression (stream_reader) instead of dctx.decompress(),
+    because the latter requires the original size to be present in the zstd
+    frame header. CI compresses framework bundles via `tar | zstd`, which
+    pipes from stdin and produces frames without the size header. Streaming
+    decompression handles both cases (with or without size in header).
+    """
     dest.parent.mkdir(parents=True, exist_ok=True)
     with urllib.request.urlopen(url) as r:
         compressed = r.read()
     dctx = zstd.ZstdDecompressor()
-    dest.write_bytes(dctx.decompress(compressed))
+    import io
+    with io.BytesIO(compressed) as src, open(dest, "wb") as dst:
+        with dctx.stream_reader(src) as reader:
+            while True:
+                chunk = reader.read(1 << 20)
+                if not chunk:
+                    break
+                dst.write(chunk)
