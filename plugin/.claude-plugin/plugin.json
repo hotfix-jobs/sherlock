@@ -6,10 +6,7 @@
     "url": "https://github.com/hotfix-jobs"
   },
   "homepage": "https://github.com/hotfix-jobs/sherlock",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/hotfix-jobs/sherlock.git"
-  },
+  "repository": "https://github.com/hotfix-jobs/sherlock.git",
   "license": "MIT",
   "keywords": ["apple", "swift", "swiftui", "uikit", "ios", "macos", "documentation", "mcp", "sherlock"],
   "mcpServers": {
