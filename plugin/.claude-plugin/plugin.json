@@ -1,6 +1,5 @@
 {
   "name": "sherlock",
-  "version": "0.1.0",
   "description": "Search and read Apple Developer documentation. Sherlock indexes every Swift, SwiftUI, UIKit, Foundation, Combine, Core Data, and more symbol. Instantly searchable and offline-capable.",
   "author": {
     "name": "Hotfix",

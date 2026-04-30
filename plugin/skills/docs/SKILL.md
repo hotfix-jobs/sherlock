@@ -1,6 +1,6 @@
 ---
 name: docs
-description: Use when the user asks about Apple platform APIs (Swift, SwiftUI, UIKit, Foundation, Core Data, Combine, SwiftData, Core ML, MapKit, AVFoundation), needs symbol/class/method documentation, or references developer.apple.com. Searches and reads Apple Developer documentation via the Sherlock MCP server.
+description: Use when the user asks about an Apple platform API (Swift, SwiftUI, UIKit, AppKit, Foundation, Combine, Core Data, SwiftData, Core ML, MapKit, AVFoundation, ARKit, RealityKit, HealthKit, FoundationModels, etc.), references developer.apple.com, mentions a specific Apple framework or symbol, or works with code that calls into an Apple framework.
 ---
 
 # Sherlock: Apple Developer documentation

@@ -3,6 +3,7 @@
   "description": "Claude Code plugins from Hotfix. Currently: Sherlock for Apple Developer documentation.",
   "owner": {
     "name": "Hotfix",
+    "email": "support@hotfix.jobs",
     "url": "https://hotfix.jobs"
   },
   "plugins": [

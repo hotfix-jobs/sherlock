@@ -17,6 +17,15 @@ Sherlock pairs naturally with the [Superpowers](https://github.com/obra/superpow
 /plugin install sherlock
 ```
 
+### Prerequisites
+
+The MCP server runs in Python, so users need:
+
+- **Python 3.9 or newer** on the system PATH (`python3 --version`)
+- The `mcp` and `zstandard` Python packages (Claude Code installs them automatically the first time the plugin runs)
+
+If `python3` is not available, the plugin will fail to start. On macOS, install with `brew install python` or use the Python from Xcode Command Line Tools.
+
 ## What you get
 
 ### Five MCP tools your agent can call directly
