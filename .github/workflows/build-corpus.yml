@@ -30,11 +30,13 @@ jobs:
           sudo apt-get update -y && sudo apt-get install -y zstd jq
 
       - name: Build corpus (single streaming pass)
+        env:
+          PYTHONUNBUFFERED: "1"
         run: |
           if [ -n "${{ github.event.inputs.frameworks }}" ]; then
-            python scripts/build_corpus.py --out-dir dist --frameworks ${{ github.event.inputs.frameworks }}
+            python -u scripts/build_corpus.py --out-dir dist --frameworks ${{ github.event.inputs.frameworks }}
           else
-            python scripts/build_corpus.py --out-dir dist
+            python -u scripts/build_corpus.py --out-dir dist
           fi
 
       - name: Compress release artifacts
