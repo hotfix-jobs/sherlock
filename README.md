@@ -6,6 +6,10 @@ Sherlock is a [Claude Code](https://claude.com/claude-code) plugin that gives Cl
 
 Named after [Apple's original macOS search app](https://en.wikipedia.org/wiki/Sherlock_(software)) (and the dev folklore around it), Sherlock indexes ~70,000 symbols into a SQLite FTS5 database and serves them to Claude as MCP tools.
 
+## Works great with Superpowers
+
+Sherlock pairs naturally with the [Superpowers](https://github.com/obra/superpowers) Claude Code plugin. Use Superpowers' brainstorming, planning, and TDD skills to figure out *what* to build; Sherlock grounds the *how* in Apple's actual API surface. The skills in this plugin defer to Superpowers when both are installed, so you get composition rather than overlap.
+
 ## Install
 
 ```
