@@ -1,0 +1,22 @@
+{
+  "name": "sherlock",
+  "version": "0.1.0",
+  "description": "Search and read Apple Developer documentation. Sherlock indexes every Swift, SwiftUI, UIKit, Foundation, Combine, Core Data, and more symbol. Instantly searchable and offline-capable.",
+  "author": {
+    "name": "Hotfix",
+    "url": "https://github.com/hotfix-jobs"
+  },
+  "homepage": "https://github.com/hotfix-jobs/sherlock",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hotfix-jobs/sherlock.git"
+  },
+  "license": "MIT",
+  "keywords": ["apple", "swift", "swiftui", "uikit", "ios", "macos", "documentation", "mcp", "sherlock"],
+  "mcpServers": {
+    "sherlock": {
+      "command": "python3",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp/server.py"]
+    }
+  }
+}

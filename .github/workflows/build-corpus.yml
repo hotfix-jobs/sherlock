@@ -1,0 +1,58 @@
+name: Build Apple Docs Corpus
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'   # Mondays 06:00 UTC
+  workflow_dispatch:
+    inputs:
+      frameworks:
+        description: 'Space-separated framework slugs (blank = auto-discover all)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 720
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r scripts/requirements.txt
+          sudo apt-get update -y && sudo apt-get install -y zstd jq
+
+      - name: Build corpus (single streaming pass)
+        run: |
+          if [ -n "${{ github.event.inputs.frameworks }}" ]; then
+            python scripts/build_corpus.py --out-dir dist --frameworks ${{ github.event.inputs.frameworks }}
+          else
+            python scripts/build_corpus.py --out-dir dist
+          fi
+
+      - name: Compress release artifacts
+        run: |
+          zstd -19 -f dist/index.db -o dist/index.db.zst
+          for fw in dist/markdown/*/; do
+            name=$(basename "$fw")
+            tar -cf - -C dist/markdown "$name" | zstd -19 -o "dist/sherlock-$name.tar.zst"
+          done
+          ls -lh dist/
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: corpus-${{ github.run_number }}
+          name: Corpus ${{ github.run_number }}
+          body_path: dist/manifest.json
+          files: |
+            dist/index.db.zst
+            dist/manifest.json
+            dist/sherlock-*.tar.zst

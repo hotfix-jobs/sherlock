@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+.python-version
+
+# Build output
+dist/
+build/
+*.db
+*.db.zst
+*.tar
+*.tar.zst
+
+# Apple docs corpus (CI build output, not committed)
+markdown/
+raw-json/
+.docsync/
+discovery_state.json
+discovery_state.json.backup
+index.json
+
+# Sherlock runtime data
+.sherlock-cache/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+download.log
+nohup.out
