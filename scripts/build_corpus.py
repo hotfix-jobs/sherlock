@@ -301,6 +301,12 @@ async def fetch_page(
     sem: asyncio.Semaphore,
     state: CrawlState,
 ) -> dict | None:
+    # Apple's CDN/WAF blocks any URL containing "..." as a path-traversal
+    # false positive. Affects Swift range operators (...) and (..<) and their
+    # synthesized variants on Int/Double/String/etc. Skip silently.
+    if "..." in path or "..<" in path:
+        return None
+
     url = f"{API_BASE}/{path}.json"
     backoff = 1.0
     for _ in range(5):
