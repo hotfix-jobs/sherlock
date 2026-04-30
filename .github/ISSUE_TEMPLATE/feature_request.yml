@@ -1,0 +1,47 @@
+name: Feature request
+description: Suggest an improvement to Sherlock
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for thinking about how Sherlock could be better. Please open an issue before starting work on a large change so we can align on the approach.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve
+      description: Describe the current limitation or pain point. What does Claude do badly today that this would fix?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How would you address it? New tool, new skill, change to the build pipeline?
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: What part of Sherlock does this affect
+      multiple: true
+      options:
+        - MCP server / tools
+        - Skills (docs / api-availability / signature-verification)
+        - New skill
+        - Build pipeline (scripts/build_corpus.py)
+        - Markdown converter quality
+        - Search ranking / relevance
+        - Plugin manifest / packaging
+        - Documentation
+    validations:
+      required: false

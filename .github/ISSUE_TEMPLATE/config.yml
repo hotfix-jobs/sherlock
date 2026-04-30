@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/hotfix-jobs/sherlock/security/advisories/new
+    about: Report a security issue privately. Please do not file public issues for security problems.
+  - name: Question or discussion
+    url: https://github.com/hotfix-jobs/sherlock/discussions
+    about: Ask a question or start a discussion (general usage questions, ideas, etc).

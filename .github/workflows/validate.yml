@@ -1,0 +1,46 @@
+name: Validate plugin
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Validate marketplace + plugin manifest
+        run: claude plugin validate .
+
+      - name: Check for em dashes in committed text
+        run: |
+          if grep -rn "—" --include="*.md" --include="*.json" --include="*.py" --include="*.yml" --include="*.yaml" --exclude-dir=.git .; then
+            echo "::error::Found em dashes (—) in committed files. Replace with periods, semicolons, colons, or parens."
+            exit 1
+          fi
+
+      - name: Smoke-test build pipeline imports
+        run: |
+          pip install -r scripts/requirements.txt
+          python -c "import sys; sys.path.insert(0, 'scripts'); import build_corpus; print('Imports clean')"
+
+      - name: Verify MCP server imports
+        run: |
+          pip install -r plugin/mcp/requirements.txt
+          python -c "import sys; sys.path.insert(0, 'plugin/mcp'); import server; print('MCP server imports clean')"

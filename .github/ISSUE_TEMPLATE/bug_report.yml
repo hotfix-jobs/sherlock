@@ -1,0 +1,78 @@
+name: Bug report
+description: Report a problem with Sherlock
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for the report. Please fill in the fields below so we can reproduce and fix the issue.
+
+  - type: input
+    id: claude-version
+    attributes:
+      label: Claude Code version
+      placeholder: e.g. 1.5.0
+    validations:
+      required: true
+
+  - type: input
+    id: sherlock-version
+    attributes:
+      label: Sherlock commit or release tag
+      placeholder: e.g. corpus-2026-04-30 or commit 8a2162d
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - macOS
+        - Linux
+        - Windows
+        - Other (specify in description)
+    validations:
+      required: true
+
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      placeholder: e.g. 3.12.1 (output of `python3 --version`)
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: Describe the bug clearly. Include any error messages or stack traces.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected to happen
+    validations:
+      required: false
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Install Sherlock with `/plugin install sherlock`
+        2. Ask Claude "..."
+        3. Observe error
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: MCP server output, Claude Code logs, or anything else that might help
+      render: shell
+    validations:
+      required: false
