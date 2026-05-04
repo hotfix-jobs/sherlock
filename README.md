@@ -2,7 +2,7 @@
 
 > Apple Developer documentation, instantly searchable in Claude Code.
 
-*Built by [Hotfix](https://hotfix.jobs) and used to ship our iOS app.*
+*Built by [Hotfix](https://hotfix.jobs) and used to ship our [iOS app](https://apps.apple.com/us/app/hotfix-job-search/id6759273999).*
 
 ## Demo
 
