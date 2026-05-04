@@ -2,13 +2,21 @@
 
 > Apple Developer documentation, instantly searchable in Claude Code.
 
-Sherlock is a [Claude Code](https://claude.com/claude-code) plugin that gives Claude search and read access to the entire Apple Developer documentation corpus (Swift, SwiftUI, UIKit, Foundation, Combine, Core Data, SwiftData, Core ML, MapKit, AVFoundation, and more) without leaving your editor.
+*Built by [Hotfix](https://hotfix.jobs) and used to ship our iOS app.*
 
-Named after [Apple's original macOS search app](https://en.wikipedia.org/wiki/Sherlock_(software)) (and the dev folklore around it), Sherlock indexes ~70,000 symbols into a SQLite FTS5 database and serves them to Claude as MCP tools.
+<!--
+TODO: add screenshot or asciicast here. Either of:
 
-## Works great with Superpowers
+  ![Sherlock in action](docs/demo.png)
 
-Sherlock pairs naturally with the [Superpowers](https://github.com/obra/superpowers) Claude Code plugin. Use Superpowers' brainstorming, planning, and TDD skills to figure out *what* to build; Sherlock grounds the *how* in Apple's actual API surface. The skills in this plugin defer to Superpowers when both are installed, so you get composition rather than overlap.
+  [![asciicast](https://asciinema.org/a/REPLACE_ME.svg)](https://asciinema.org/a/REPLACE_ME)
+-->
+
+## Why
+
+Claude hallucinates Apple APIs constantly. Invented method names, wrong parameter labels, deprecated symbols presented as current. The fix is grounding: give Claude a local, searchable copy of developer.apple.com and a skill that tells it when to actually look things up.
+
+Sherlock indexes ~70,000 symbols across Swift, SwiftUI, UIKit, Foundation, Combine, Core Data, SwiftData, Core ML, MapKit, AVFoundation, and more into a SQLite FTS5 database, then serves them to Claude as MCP tools. Named after [Apple's original macOS search app](https://en.wikipedia.org/wiki/Sherlock_(software)) (and the dev folklore around it).
 
 ## Install
 
@@ -46,6 +54,10 @@ If `python3` is not available, the plugin will fail to start. On macOS, install 
 | [`api-availability`](plugin/skills/api-availability/SKILL.md) | User mentions a specific iOS / macOS / visionOS / watchOS / tvOS version, references `@available`, asks about deprecation, or asks about back-deployment |
 | [`signature-verification`](plugin/skills/signature-verification/SKILL.md) | Before Claude writes any Apple framework code calling a symbol it has not just looked up. Prevents hallucinated method names, parameter labels, and return types |
 
+## Works great with Superpowers
+
+Sherlock pairs naturally with the [Superpowers](https://github.com/obra/superpowers) Claude Code plugin. Use Superpowers' brainstorming, planning, and TDD skills to figure out *what* to build; Sherlock grounds the *how* in Apple's actual API surface. The skills in this plugin defer to Superpowers when both are installed, so you get composition rather than overlap.
+
 ## How it works
 
 ```
@@ -63,39 +75,11 @@ If `python3` is not available, the plugin will fail to start. On macOS, install 
 ```
 
 - **Index DB** (~50 MB) downloads once on first tool call → `~/.claude/data/sherlock/index.db`
-- **Per-framework markdown bundles** (~10–30 MB each) fetched the first time you read a page in that framework
+- **Per-framework markdown bundles** (~10-30 MB each) fetched the first time you read a page in that framework
 - All data is cached locally; subsequent reads are instant
 - Corpus rebuilt weekly from developer.apple.com
 
 Override paths with `SHERLOCK_DATA_DIR` and `SHERLOCK_RELEASE_BASE` env vars.
-
-## Repo layout
-
-```
-sherlock/
-├── .claude-plugin/
-│   └── marketplace.json       # marketplace manifest (lists sherlock as a plugin)
-│
-├── plugin/                    # what users install
-│   ├── .claude-plugin/
-│   │   └── plugin.json
-│   ├── skills/
-│   │   ├── docs/SKILL.md
-│   │   ├── api-availability/SKILL.md
-│   │   └── signature-verification/SKILL.md
-│   └── mcp/                   # MCP server (Python)
-│       ├── server.py
-│       ├── search.py          # SQLite FTS5
-│       ├── fetch.py           # lazy install + cache
-│       └── requirements.txt
-│
-├── scripts/                   # CI build pipeline (users never run these)
-│   ├── build_corpus.py        # streaming async crawler + indexer
-│   └── requirements.txt
-│
-└── .github/workflows/
-    └── build-corpus.yml       # weekly Mon 06:00 UTC + manual dispatch
-```
 
 ## Building the corpus
 
@@ -133,6 +117,37 @@ That writes `dist/index.db`, `dist/markdown/swiftui/...`, and `dist/manifest.jso
 5. Never persists raw JSON to disk
 
 No three-step pipeline, no intermediate `raw-json/` directory, no manifest tracking between phases.
+
+<details>
+<summary>Repo layout</summary>
+
+```
+sherlock/
+├── .claude-plugin/
+│   └── marketplace.json       # marketplace manifest (lists sherlock as a plugin)
+│
+├── plugin/                    # what users install
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   ├── skills/
+│   │   ├── docs/SKILL.md
+│   │   ├── api-availability/SKILL.md
+│   │   └── signature-verification/SKILL.md
+│   └── mcp/                   # MCP server (Python)
+│       ├── server.py
+│       ├── search.py          # SQLite FTS5
+│       ├── fetch.py           # lazy install + cache
+│       └── requirements.txt
+│
+├── scripts/                   # CI build pipeline (users never run these)
+│   ├── build_corpus.py        # streaming async crawler + indexer
+│   └── requirements.txt
+│
+└── .github/workflows/
+    └── build-corpus.yml       # weekly Mon 06:00 UTC + manual dispatch
+```
+
+</details>
 
 ## Contributing
 
