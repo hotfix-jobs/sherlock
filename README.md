@@ -124,8 +124,6 @@ That writes `dist/index.db`, `dist/markdown/swiftui/...`, and `dist/manifest.jso
 4. Writes the markdown file and inserts an FTS5 row in the same loop
 5. Never persists raw JSON to disk
 
-No three-step pipeline, no intermediate `raw-json/` directory, no manifest tracking between phases.
-
 <details>
 <summary>Repo layout</summary>
 
