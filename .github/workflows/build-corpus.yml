@@ -65,13 +65,89 @@ jobs:
             echo "Install [Sherlock](https://github.com/hotfix-jobs/sherlock) and call \`update_index\` to fetch this release."
           } > dist/release-notes.md
 
+      # We upload ~370 release assets per run. GitHub's release-upload
+      # endpoint has an undocumented secondary rate limit that a single
+      # softprops/action-gh-release call burst-uploads right past. Instead:
+      # create a draft release, upload assets one-by-one with throttling +
+      # retry, then promote to published so `latest` only moves on success.
+      - name: Create or reuse draft release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="corpus-${{ steps.meta.outputs.date }}"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $TAG already exists; reusing"
+            gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" \
+              --draft \
+              --notes-file dist/release-notes.md
+          else
+            gh release create "$TAG" --repo "$GITHUB_REPOSITORY" \
+              --title "Apple Docs Corpus ${{ steps.meta.outputs.date }}" \
+              --notes-file dist/release-notes.md \
+              --draft
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Upload release assets (throttled)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag }}
+          # Pause between individual uploads (seconds).
+          INTER_UPLOAD_SLEEP: "2"
+          # Every BATCH uploads, sleep BATCH_SLEEP for cooldown.
+          BATCH: "50"
+          BATCH_SLEEP: "60"
+          # Per-asset retry on transient failures (e.g., secondary rate limit).
+          MAX_RETRIES: "6"
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+
+          ASSETS=(dist/index.db.zst dist/manifest.json dist/sherlock-*.tar.zst)
+          TOTAL=${#ASSETS[@]}
+          echo "Uploading $TOTAL assets to $TAG"
+
+          upload_one() {
+            local file="$1"
+            local attempt=1
+            local backoff=15
+            while true; do
+              if gh release upload "$TAG" "$file" \
+                  --repo "$GITHUB_REPOSITORY" --clobber; then
+                return 0
+              fi
+              if [ "$attempt" -ge "$MAX_RETRIES" ]; then
+                echo "::error::Failed to upload $file after $attempt attempts"
+                return 1
+              fi
+              echo "Upload of $file failed (attempt $attempt). Sleeping ${backoff}s..."
+              sleep "$backoff"
+              attempt=$((attempt + 1))
+              backoff=$((backoff * 2))
+            done
+          }
+
+          count=0
+          for f in "${ASSETS[@]}"; do
+            upload_one "$f"
+            count=$((count + 1))
+            if [ "$count" -lt "$TOTAL" ]; then
+              if [ $((count % BATCH)) -eq 0 ]; then
+                echo "Uploaded $count/$TOTAL — cooling down ${BATCH_SLEEP}s"
+                sleep "$BATCH_SLEEP"
+              else
+                sleep "$INTER_UPLOAD_SLEEP"
+              fi
+            fi
+          done
+          echo "Uploaded $count/$TOTAL assets"
+
       - name: Publish release
-        uses: softprops/action-gh-release@v3
-        with:
-          tag_name: corpus-${{ steps.meta.outputs.date }}
-          name: Apple Docs Corpus ${{ steps.meta.outputs.date }}
-          body_path: dist/release-notes.md
-          files: |
-            dist/index.db.zst
-            dist/manifest.json
-            dist/sherlock-*.tar.zst
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          set -euo pipefail
+          gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest
