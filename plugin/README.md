@@ -9,10 +9,11 @@ Named after Apple's original macOS search app (and the dev folklore around it), 
 ## Install
 
 ```
+/plugin marketplace add hotfix-jobs/sherlock
 /plugin install sherlock
 ```
 
-(Pre-marketplace: clone this repo and point `~/.claude/settings.json` at `plugin/`.)
+See the [main README](../README.md) for the full pitch, demos, and prerequisites.
 
 ## Tools exposed
 
