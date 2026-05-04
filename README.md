@@ -4,13 +4,21 @@
 
 *Built by [Hotfix](https://hotfix.jobs) and used to ship our iOS app.*
 
-<!--
-TODO: add screenshot or asciicast here. Either of:
+## Demo
 
-  ![Sherlock in action](docs/demo.png)
+Sherlock answering Apple framework questions in Claude Code using only the local doc index.
 
-  [![asciicast](https://asciinema.org/a/REPLACE_ME.svg)](https://asciinema.org/a/REPLACE_ME)
--->
+**SwiftUI lifecycle: `.task` vs `.onAppear` vs `.onChange`**
+
+[![asciicast](https://asciinema.org/a/6djsjAGceOsloBTj.svg)](https://asciinema.org/a/6djsjAGceOsloBTj)
+
+**UIKit: `viewIsAppearing` vs `viewWillAppear` vs `viewDidAppear`**
+
+[![asciicast](https://asciinema.org/a/ainsnpxHwleIaFds.svg)](https://asciinema.org/a/ainsnpxHwleIaFds)
+
+**Background tasks: `BGAppRefreshTask` vs `BGProcessingTask`**
+
+[![asciicast](https://asciinema.org/a/15vPQYcsER4KRXmV.svg)](https://asciinema.org/a/15vPQYcsER4KRXmV)
 
 ## Why
 
